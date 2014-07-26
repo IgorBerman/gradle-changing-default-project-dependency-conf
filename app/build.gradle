@@ -1,0 +1,8 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName="com.example.android.multiproject.MainActivity"
+dependencies {
+    projectDependency project(':library')
+}
+

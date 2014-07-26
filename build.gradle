@@ -1,0 +1,24 @@
+allprojects {
+	apply plugin: ProjectDependencyPlugin
+
+	configurations {
+		projectDependency
+	}
+}
+
+class ProjectDependencyPlugin implements Plugin<Project> {
+    void apply(Project theProject) {
+		theProject.configurations.whenObjectAdded{o ->
+			if (o.name.contains('projectDependency')){
+				o.dependencies.whenObjectAdded{ d ->
+					theProject.dependencies {
+						compile  project(path: ":"+d.dependencyProject.name, configuration: 'compile')
+						compile  project(path: ":"+d.dependencyProject.name, configuration: 'archives')
+						runtime  project(path: ":"+d.dependencyProject.name, configuration: 'runtime')
+						runtime  project(path: ":"+d.dependencyProject.name, configuration: 'archives')
+					}
+				}
+			}
+		}
+    }
+}
